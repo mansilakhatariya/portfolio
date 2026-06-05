@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mansi Lakhatariya — React Native Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: #ffffff0f;
+    --accent: #7c6af7;
+    --accent2: #f76a8a;
+    --accent3: #6af7c8;
+    --text: #f0eff8;
+    --muted: #888799;
+    --tag-bg: #7c6af71a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 6vw 4rem;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #7c6af730 0%, transparent 70%);
+    top: -200px; right: -200px;
+    pointer-events: none;
+    animation: floatGlow 8s ease-in-out infinite alternate;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f76a8a18 0%, transparent 70%);
+    bottom: 0; left: -100px;
+    pointer-events: none;
+    animation: floatGlow 11s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes floatGlow {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(30px, 40px) scale(1.08); }
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--tag-bg);
+    border: 1px solid #7c6af740;
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a99cf5;
+    margin-bottom: 2rem;
+    width: fit-content;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-badge span.dot {
+    width: 6px; height: 6px;
+    background: var(--accent3);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.9s 0.1s ease both;
+  }
+
+  .hero-name em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-role {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 1.5rem;
+    letter-spacing: 0.02em;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+
+  .hero-contact {
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+    margin-top: 2.5rem;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+
+  .contact-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.9rem; color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-item:hover { color: var(--text); }
+  .contact-item svg { flex-shrink: 0; }
+
+  .hero-stats {
+    display: flex; flex-wrap: wrap; gap: 2rem;
+    margin-top: 4rem;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+
+  .stat {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 6vw;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.75rem; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    animation: fadeUp 1s 0.6s ease both;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding: 5rem 6vw;
+    position: relative;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .about-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #c5c3d8;
+    font-weight: 300;
+  }
+
+  .about-highlights {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  .highlight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .highlight-card:hover {
+    border-color: #7c6af750;
+    transform: translateX(6px);
+  }
+
+  .highlight-icon {
+    font-size: 1.4rem; flex-shrink: 0;
+    width: 2.4rem; height: 2.4rem;
+    background: var(--tag-bg);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .highlight-text h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem; font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .highlight-text p { font-size: 0.82rem; color: var(--muted); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 0 6vw;
+  }
+
+  /* ── EXPERIENCE ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 8px;
+    width: 1px;
+    height: calc(100% - 8px);
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideIn 0.6s ease forwards;
+  }
+
+  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.5rem; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .timeline-header {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.5rem 1rem; margin-bottom: 0.4rem;
+  }
+
+  .job-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+  }
+
+  .company {
+    color: var(--accent); font-size: 0.9rem; font-weight: 500;
+  }
+
+  .job-meta {
+    font-size: 0.78rem; color: var(--muted);
+    margin-bottom: 0.8rem;
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .timeline-body ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+
+  .timeline-body ul li {
+    font-size: 0.88rem;
+    color: #b0aec5;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .timeline-body ul li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--accent3); font-size: 0.7rem;
+    top: 3px;
+  }
+
+  /* ── APPS ── */
+  .apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .app-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+
+  .app-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #7c6af708, transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+
+  .app-card:hover {
+    transform: translateY(-4px);
+    border-color: #7c6af740;
+    box-shadow: 0 20px 60px #7c6af715;
+  }
+  .app-card:hover::before { opacity: 1; }
+
+  .app-emoji {
+    font-size: 2rem; margin-bottom: 1rem;
+  }
+
+  .app-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .app-company {
+    font-size: 0.72rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+
+  .app-desc {
+    font-size: 0.83rem; color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── SKILLS ── */
+  .skills-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .skill-group:hover { border-color: #7c6af740; }
+
+  .skill-group-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent3);
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+
+  .tag {
+    background: var(--tag-bg);
+    border: 1px solid #7c6af730;
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    color: #c0bcd8;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .tag:hover {
+    background: #7c6af730;
+    color: var(--text);
+  }
+
+  /* ── EDUCATION ── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .edu-card:hover {
+    border-color: #f76a8a40;
+    transform: translateY(-3px);
+  }
+
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-school {
+    font-size: 0.83rem; color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .edu-score {
+    font-size: 0.8rem;
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  .edu-year {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    font-size: 0.72rem; color: var(--muted);
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* ── LANGUAGES ── */
+  .lang-list {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+  }
+
+  .lang-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 0.88rem;
+  }
+
+  .lang-flag { font-size: 1.1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 6vw;
+    border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: 1rem;
+  }
+
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700;
+  }
+
+  .footer-copy {
+    font-size: 0.78rem; color: var(--muted);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 6vw;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #0a0a0fcc;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex; gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.82rem; color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero { padding-top: 7rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">ML</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#apps">Apps</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Available for opportunities
+  </div>
+
+  <h1 class="hero-name">
+    Mansi<br><em>Lakhatariya</em>
+  </h1>
+
+  <p class="hero-role">React Native Engineer &nbsp;·&nbsp; 7 Years Experience &nbsp;·&nbsp; iOS & Android</p>
+
+  <div class="hero-contact">
+    <a href="tel:7284022651" class="contact-item">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
+      +91 7284022651
+    </a>
+    <a href="mailto:lakhatariyamahi@gmail.com" class="contact-item">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      lakhatariyamahi@gmail.com
+    </a>
+    <a href="https://behance.net/mansilakhatariya" class="contact-item">
+      <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.884 2.102 1.884.7 0 1.15-.3 1.553-.963l2.1.113zm-7.726-7h5v.875H16v-.875zM9.5 12c0 2.206 1.794 4 4 4s4-1.794 4-4-1.794-4-4-4-4 1.794-4 4zm-2-5H4C2.896 7 2 7.896 2 9v9c0 1.104.896 2 2 2h7c1.104 0 2-.896 2-2V9c0-1.104-.896-2-2-2zm0 11H4V9h3.5v8z"/></svg>
+      @mansilakhatariya
+    </a>
+    <span class="contact-item">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Ahmedabad, India
+    </span>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">7+</span>
+      <span class="stat-label">Years Experience</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">9+</span>
+      <span class="stat-label">Apps Shipped</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">Companies</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">2</span>
+      <span class="stat-label">Platforms</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span class="scroll-line"></span>
+    Scroll to explore
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">About Me</p>
+  <h2 class="section-title">Building mobile experiences<br>that scale.</h2>
+
+  <div class="about-grid">
+    <p class="about-text">
+      React Native Engineer with 7 years of experience delivering scalable, high-performance mobile applications across diverse domains including <strong style="color:var(--text)">real estate, fintech, and edtech</strong>. Skilled in leading end-to-end development, modernizing legacy codebases, and implementing robust architectures that support long-term growth.
+      <br><br>
+      Adept at integrating complex features such as push notifications, deep linking, and offline-first capabilities while ensuring seamless deployment across iOS and Android platforms. Known for driving technical excellence, mentoring teams, and consistently delivering reliable, user-centric solutions in Agile environments.
+    </p>
+
+    <div class="about-highlights">
+      <div class="highlight-card">
+        <div class="highlight-icon">🏗️</div>
+        <div class="highlight-text">
+          <h4>Architecture-first Mindset</h4>
+          <p>Clean Architecture, scalable navigation, centralized error handling</p>
+        </div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🚀</div>
+        <div class="highlight-text">
+          <h4>End-to-end Ownership</h4>
+          <p>From coding to TestFlight & Play Store production deployments</p>
+        </div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🤝</div>
+        <div class="highlight-text">
+          <h4>Team Mentor & Leader</h4>
+          <p>Guided junior developers and collaborated across cross-functional teams</p>
+        </div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🤖</div>
+        <div class="highlight-text">
+          <h4>AI-Augmented Development</h4>
+          <p>Expert in leveraging AI tools to accelerate development velocity</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label">Career</p>
+  <h2 class="section-title">Professional Experience</h2>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <span class="timeline-dot"></span>
+      <div class="timeline-header">
+        <span class="job-title">React Native Engineer</span>
+        <span class="company">Avesta HQ</span>
+      </div>
+      <div class="job-meta">
+        <span>📍 Ahmedabad</span>
+        <span>Feb 2024 – Present</span>
+      </div>
+      <div class="timeline-body">
+        <ul>
+          <li>Developed a core real estate application end-to-end within an Agile team of 4, from coding to production deployment.</li>
+          <li>Led React Native version upgrades (v0.75 → v0.81) and integrated Expo EAS for automated builds and OTA updates.</li>
+          <li>Architected a complete push notification system using Firebase (FCM) with deep linking for seamless user re-engagement.</li>
+          <li>Refactored navigation to a scalable Auth/App/Bottom-Tab stack, improving app-wide state management.</li>
+          <li>Resolved chronic Android build-time bottlenecks by implementing a caching mechanism.</li>
+          <li>Implemented centralized global error-handling and initiated a transition toward Clean Architecture.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-dot" style="background:var(--accent2); box-shadow: 0 0 12px var(--accent2);"></span>
+      <div class="timeline-header">
+        <span class="job-title">Senior Software Engineer</span>
+        <span class="company" style="color:var(--accent2)">Acquaint Softtech Pvt. Ltd.</span>
+      </div>
+      <div class="job-meta">
+        <span>📍 Ahmedabad</span>
+        <span>Nov 2022 – Dec 2023</span>
+      </div>
+      <div class="timeline-body">
+        <ul>
+          <li>Spearheaded a transportation platform and a finance manager app featuring debt-reduction tools and automated insights.</li>
+          <li>Partnered with backend developers to define API requirements and implement complex data integrations.</li>
+          <li>Delivered pixel-perfect interfaces from high-fidelity designs, iterating rapidly on direct client feedback.</li>
+          <li>Independently managed the full development lifecycle of an emerging application with evolving client requirements.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-dot" style="background:var(--accent3); box-shadow: 0 0 12px var(--accent3);"></span>
+      <div class="timeline-header">
+        <span class="job-title">Software Engineer</span>
+        <span class="company" style="color:var(--accent3)">Smarsh Infotech</span>
+      </div>
+      <div class="job-meta">
+        <span>🌐 Remote</span>
+        <span>Oct 2021 – Nov 2022</span>
+      </div>
+      <div class="timeline-body">
+        <ul>
+          <li>Contributed as a shadow developer in a 5+ member team to maintain and scale a large-scale EdTech application.</li>
+          <li>Used a client-mandated proprietary IDE to implement features in a secure, compliance-driven environment.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-dot"></span>
+      <div class="timeline-header">
+        <span class="job-title">Software Developer</span>
+        <span class="company">The Algorithm</span>
+      </div>
+      <div class="job-meta">
+        <span>🌐 Remote</span>
+        <span>Aug 2020 – Sep 2021</span>
+      </div>
+      <div class="timeline-body">
+        <ul>
+          <li>Developed and maintained four distinct mobile applications, including a rural media platform and a school-parent communication app.</li>
+          <li>Engineered an offline-first architecture using RealmDB for rural surveys in low-connectivity environments.</li>
+          <li>Integrated high-fidelity video/audio playback, push notifications, and direct messaging for real-time coordination.</li>
+          <li>Managed end-to-end deployment on Google Play Store and Apple App Store.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="timeline-dot" style="background:var(--accent2); box-shadow: 0 0 12px var(--accent2);"></span>
+      <div class="timeline-header">
+        <span class="job-title">React Native Developer</span>
+        <span class="company" style="color:var(--accent2)">Virtual Heights IT Service Pvt. Ltd.</span>
+      </div>
+      <div class="job-meta">
+        <span>📍 Ahmedabad</span>
+        <span>Apr 2019 – Jun 2020</span>
+      </div>
+      <div class="timeline-body">
+        <ul>
+          <li>Contributed to a B2B/B2C Business Social Networking platform for product discovery and marketplace trading.</li>
+          <li>Implemented Redux Toolkit for centralized state management alongside complex navigation and secure auth flows.</li>
+          <li>Developed a device-perfect UI ensuring consistent visual fidelity across varied screen sizes and hardware.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- APPS -->
+<section id="apps">
+  <p class="section-label">Portfolio</p>
+  <h2 class="section-title">Applications Shipped</h2>
+
+  <div class="apps-grid">
+
+    <div class="app-card">
+      <div class="app-emoji">🏠</div>
+      <div class="app-name">View.com.au</div>
+      <div class="app-company">Avesta HQ</div>
+      <div class="app-desc">Real estate platform going beyond traditional listings — aerial map search, property data, and insights for informed decisions across sale, rent, and off-market properties.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">💳</div>
+      <div class="app-name">SuperFi</div>
+      <div class="app-company">Acquaint Softtech</div>
+      <div class="app-desc">Personal finance manager app that manages credit cards, provides money-saving tips, and helps users eliminate debt systematically.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">🛺</div>
+      <div class="app-name">TryKo</div>
+      <div class="app-company">Acquaint Softtech</div>
+      <div class="app-desc">Trike transportation platform making rides safer, easier, faster and more accessible for communities.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">📚</div>
+      <div class="app-name">Dailyhunt</div>
+      <div class="app-company">Smarsh Infotech</div>
+      <div class="app-desc">India's all-in-one EdTech aggregator — a one-stop shop for all education needs across every category of learning.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">🌾</div>
+      <div class="app-name">GaonConnection</div>
+      <div class="app-company">The Algorithm</div>
+      <div class="app-desc">India's biggest rural media platform — a two-way information highway bridging urban and rural India with knowledge and stories.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">🎧</div>
+      <div class="app-name">The Slow</div>
+      <div class="app-company">The Algorithm</div>
+      <div class="app-desc">A premium content delivery application supporting rich Audio, Video, and Text experiences for mindful consumption.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">🏫</div>
+      <div class="app-name">SchoolsOut</div>
+      <div class="app-company">The Algorithm</div>
+      <div class="app-desc">Community app that empowers parents to manage kid's pick-up schedules and communicate directly with schools in real-time.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">🧠</div>
+      <div class="app-name">BX Builders</div>
+      <div class="app-company">The Algorithm</div>
+      <div class="app-desc">Innovative app helping neurodivergent individuals practice and learn social behaviours through guided, supportive experiences.</div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-emoji">🤝</div>
+      <div class="app-name">LETSBIZ</div>
+      <div class="app-company">Virtual Heights IT</div>
+      <div class="app-desc">B2B/B2C Business Social Networking platform for product and service discovery, enabling buying, selling, and trading between businesses.</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">Expertise</p>
+  <h2 class="section-title">Technical Skills</h2>
+
+  <div class="skills-wrapper">
+
+    <div class="skill-group">
+      <div class="skill-group-title">📱 Mobile & Languages</div>
+      <div class="tags">
+        <span class="tag">React Native</span>
+        <span class="tag">ReactJS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Expo EAS</span>
+        <span class="tag">Flutter</span>
+        <span class="tag">Objective-C / Swift</span>
+        <span class="tag">RESTful APIs</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">🗄️ State & Data</div>
+      <div class="tags">
+        <span class="tag">Redux Toolkit</span>
+        <span class="tag">TanStack Query</span>
+        <span class="tag">RealmDB</span>
+        <span class="tag">AsyncStorage</span>
+        <span class="tag">Stateless / Stateful</span>
+        <span class="tag">Offline-first</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">🔧 Services & DevOps</div>
+      <div class="tags">
+        <span class="tag">Firebase FCM</span>
+        <span class="tag">Crashlytics</span>
+        <span class="tag">OTA Updates</span>
+        <span class="tag">CI/CD</span>
+        <span class="tag">GitHub / BitBucket</span>
+        <span class="tag">Code Signing</span>
+        <span class="tag">Sentry</span>
+        <span class="tag">Axios</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">✨ Core Features</div>
+      <div class="tags">
+        <span class="tag">Push Notifications</span>
+        <span class="tag">Deep Linking</span>
+        <span class="tag">Geolocation</span>
+        <span class="tag">React Navigation</span>
+        <span class="tag">Pixel-perfect UI</span>
+        <span class="tag">A/B Experimentation</span>
+        <span class="tag">Error Handling</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">🎨 Design & Tools</div>
+      <div class="tags">
+        <span class="tag">Figma</span>
+        <span class="tag">Native Base</span>
+        <span class="tag">Reactotron</span>
+        <span class="tag">Clarity</span>
+        <span class="tag">Build Flavors</span>
+        <span class="tag">Automated Testing</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">🤝 Soft Skills</div>
+      <div class="tags">
+        <span class="tag">Leadership</span>
+        <span class="tag">Team Collaboration</span>
+        <span class="tag">Mentoring</span>
+        <span class="tag">Agile</span>
+        <span class="tag">Advanced Debugging</span>
+        <span class="tag">AI-augmented Dev</span>
+        <span class="tag">Cross-functional</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <p class="section-label">Academics</p>
+  <h2 class="section-title">Education</h2>
+
+  <div class="edu-grid">
+
+    <div class="edu-card">
+      <span class="edu-year">2019</span>
+      <div class="edu-degree">MCA</div>
+      <div class="edu-school">Dr. Subhash University</div>
+      <div class="edu-score">81.40%</div>
+    </div>
+
+    <div class="edu-card">
+      <span class="edu-year">2017</span>
+      <div class="edu-degree">BCA</div>
+      <div class="edu-school">M.M.G College</div>
+      <div class="edu-score">72.37%</div>
+    </div>
+
+    <div class="edu-card">
+      <span class="edu-year">2014</span>
+      <div class="edu-degree">HSC</div>
+      <div class="edu-school">Shree Kanya Vidhya Mandir</div>
+      <div class="edu-score">77.73%</div>
+    </div>
+
+    <div class="edu-card">
+      <span class="edu-year">2012</span>
+      <div class="edu-degree">SSC</div>
+      <div class="edu-school">Shree Kanya Vidhya Mandir</div>
+      <div class="edu-score">77.00%</div>
+    </div>
+
+  </div>
+
+  <!-- LANGUAGES -->
+  <div style="margin-top: 3rem;">
+    <p class="section-label" style="margin-bottom:1rem;">Languages</p>
+    <div class="lang-list">
+      <div class="lang-pill"><span class="lang-flag">🇮🇳</span> Gujarati</div>
+      <div class="lang-pill"><span class="lang-flag">🇬🇧</span> English</div>
+      <div class="lang-pill"><span class="lang-flag">🇮🇳</span> Hindi</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-name">Mansi Lakhatariya</div>
+    <div class="footer-copy" style="margin-top:4px;">React Native Engineer · Ahmedabad, India</div>
+  </div>
+  <div class="footer-copy">lakhatariyamahi@gmail.com &nbsp;·&nbsp; +91 7284022651</div>
+</footer>
+
+</body>
+</html>
