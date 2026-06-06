@@ -2,556 +2,542 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>Mansi Lakhatariya — React Native Engineer</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #18181f;
-    --border: #ffffff0f;
-    --accent: #7c6af7;
-    --accent2: #f76a8a;
-    --accent3: #6af7c8;
-    --text: #f0eff8;
-    --muted: #888799;
-    --tag-bg: #7c6af71a;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 6rem 6vw 4rem;
-    overflow: hidden;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 700px; height: 700px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #7c6af730 0%, transparent 70%);
-    top: -200px; right: -200px;
-    pointer-events: none;
-    animation: floatGlow 8s ease-in-out infinite alternate;
-  }
-  .hero-glow2 {
-    position: absolute;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #f76a8a18 0%, transparent 70%);
-    bottom: 0; left: -100px;
-    pointer-events: none;
-    animation: floatGlow 11s ease-in-out infinite alternate-reverse;
-  }
-
-  @keyframes floatGlow {
-    from { transform: translate(0, 0) scale(1); }
-    to   { transform: translate(30px, 40px) scale(1.08); }
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--tag-bg);
-    border: 1px solid #7c6af740;
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #a99cf5;
-    margin-bottom: 2rem;
-    width: fit-content;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  .hero-badge span.dot {
-    width: 6px; height: 6px;
-    background: var(--accent3);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.4); }
-  }
-
-  .hero-name {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 9vw, 7.5rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    animation: fadeUp 0.9s 0.1s ease both;
-  }
-
-  .hero-name em {
-    font-style: normal;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero-role {
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    color: var(--muted);
-    font-weight: 300;
-    margin-top: 1.5rem;
-    letter-spacing: 0.02em;
-    animation: fadeUp 1s 0.2s ease both;
-  }
-
-  .hero-contact {
-    display: flex; flex-wrap: wrap; gap: 1.5rem;
-    margin-top: 2.5rem;
-    animation: fadeUp 1s 0.3s ease both;
-  }
-
-  .contact-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 0.9rem; color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .contact-item:hover { color: var(--text); }
-  .contact-item svg { flex-shrink: 0; }
-
-  .hero-stats {
-    display: flex; flex-wrap: wrap; gap: 2rem;
-    margin-top: 4rem;
-    animation: fadeUp 1s 0.4s ease both;
-  }
-
-  .stat {
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.5rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-  }
-  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; }
-
-  .scroll-hint {
-    position: absolute; bottom: 2rem; left: 6vw;
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.75rem; color: var(--muted);
-    letter-spacing: 0.1em; text-transform: uppercase;
-    animation: fadeUp 1s 0.6s ease both;
-  }
-  .scroll-line {
-    width: 40px; height: 1px;
-    background: linear-gradient(to right, var(--accent), transparent);
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── SECTION ── */
-  section {
-    padding: 5rem 6vw;
-    position: relative;
-  }
-
-  .section-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-    font-weight: 500;
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 3rem;
-  }
-
-  /* ── ABOUT ── */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  @media (max-width: 768px) {
-    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-  }
-
-  .about-text {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: #c5c3d8;
-    font-weight: 300;
-  }
-
-  .about-highlights {
-    display: flex; flex-direction: column; gap: 1rem;
-  }
-
-  .highlight-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.2rem 1.5rem;
-    display: flex; align-items: flex-start; gap: 1rem;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .highlight-card:hover {
-    border-color: #7c6af750;
-    transform: translateX(6px);
-  }
-
-  .highlight-icon {
-    font-size: 1.4rem; flex-shrink: 0;
-    width: 2.4rem; height: 2.4rem;
-    background: var(--tag-bg);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .highlight-text h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem; font-weight: 700;
-    margin-bottom: 3px;
-  }
-  .highlight-text p { font-size: 0.82rem; color: var(--muted); }
-
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--border), transparent);
-    margin: 0 6vw;
-  }
-
-  /* ── EXPERIENCE ── */
-  .timeline {
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute; left: 0; top: 8px;
-    width: 1px;
-    height: calc(100% - 8px);
-    background: linear-gradient(to bottom, var(--accent), transparent);
-  }
-
-  .timeline-item {
-    position: relative;
-    margin-bottom: 3rem;
-    padding-left: 2rem;
-    opacity: 0;
-    transform: translateX(-20px);
-    animation: slideIn 0.6s ease forwards;
-  }
-
-  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
-  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
-  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
-  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
-  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
-
-  @keyframes slideIn {
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  .timeline-dot {
-    position: absolute;
-    left: -2.5rem; top: 6px;
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 12px var(--accent);
-  }
-
-  .timeline-header {
-    display: flex; flex-wrap: wrap; align-items: baseline;
-    gap: 0.5rem 1rem; margin-bottom: 0.4rem;
-  }
-
-  .job-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem; font-weight: 700;
-  }
-
-  .company {
-    color: var(--accent); font-size: 0.9rem; font-weight: 500;
-  }
-
-  .job-meta {
-    font-size: 0.78rem; color: var(--muted);
-    margin-bottom: 0.8rem;
-    display: flex; gap: 1rem; flex-wrap: wrap;
-  }
-
-  .timeline-body ul {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 0.4rem;
-  }
-
-  .timeline-body ul li {
-    font-size: 0.88rem;
-    color: #b0aec5;
-    padding-left: 1rem;
-    position: relative;
-    line-height: 1.6;
-  }
-
-  .timeline-body ul li::before {
-    content: '▸';
-    position: absolute; left: 0;
-    color: var(--accent3); font-size: 0.7rem;
-    top: 3px;
-  }
-
-  /* ── APPS ── */
-  .apps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .app-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.8rem;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-
-  .app-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, #7c6af708, transparent);
-    opacity: 0; transition: opacity 0.3s;
-  }
-
-  .app-card:hover {
-    transform: translateY(-4px);
-    border-color: #7c6af740;
-    box-shadow: 0 20px 60px #7c6af715;
-  }
-  .app-card:hover::before { opacity: 1; }
-
-  .app-emoji {
-    font-size: 2rem; margin-bottom: 1rem;
-  }
-
-  .app-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem; font-weight: 700;
-    margin-bottom: 0.4rem;
-  }
-
-  .app-company {
-    font-size: 0.72rem; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.1em;
-    margin-bottom: 0.6rem;
-  }
-
-  .app-desc {
-    font-size: 0.83rem; color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* ── SKILLS ── */
-  .skills-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .skill-group {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    transition: border-color 0.3s;
-  }
-  .skill-group:hover { border-color: #7c6af740; }
-
-  .skill-group-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.8rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--accent3);
-    margin-bottom: 1rem;
-  }
-
-  .tags {
-    display: flex; flex-wrap: wrap; gap: 0.5rem;
-  }
-
-  .tag {
-    background: var(--tag-bg);
-    border: 1px solid #7c6af730;
-    border-radius: 100px;
-    padding: 4px 12px;
-    font-size: 0.78rem;
-    color: #c0bcd8;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .tag:hover {
-    background: #7c6af730;
-    color: var(--text);
-  }
-
-  /* ── EDUCATION ── */
-  .edu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.2rem;
-  }
-
-  .edu-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .edu-card:hover {
-    border-color: #f76a8a40;
-    transform: translateY(-3px);
-  }
-
-  .edu-degree {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem; font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
-
-  .edu-school {
-    font-size: 0.83rem; color: var(--muted);
-    margin-bottom: 0.6rem;
-  }
-
-  .edu-score {
-    font-size: 0.8rem;
-    color: var(--accent2);
-    font-weight: 500;
-  }
-
-  .edu-year {
-    position: absolute; top: 1.2rem; right: 1.2rem;
-    font-size: 0.72rem; color: var(--muted);
-    font-family: 'Syne', sans-serif;
-  }
-
-  /* ── LANGUAGES ── */
-  .lang-list {
-    display: flex; flex-wrap: wrap; gap: 1rem;
-  }
-
-  .lang-pill {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 8px 20px;
-    font-size: 0.88rem;
-  }
-
-  .lang-flag { font-size: 1.1rem; }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 3rem 6vw;
-    border-top: 1px solid var(--border);
-    display: flex; flex-wrap: wrap; align-items: center;
-    justify-content: space-between; gap: 1rem;
-  }
-
-  .footer-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem; font-weight: 700;
-  }
-
-  .footer-copy {
-    font-size: 0.78rem; color: var(--muted);
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 1rem 6vw;
-    display: flex; justify-content: space-between; align-items: center;
-    background: #0a0a0fcc;
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-brand {
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem; font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-
-  .nav-links {
-    display: flex; gap: 2rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 0.82rem; color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); }
-
-  @media (max-width: 600px) {
-    .nav-links { display: none; }
-    .hero { padding-top: 7rem; }
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#E8E6E0;
+  --white:#141414;
+  --gray-1:#D0CEC8;
+  --gray-2:#B8B6B0;
+  --gray-3:#909090;
+  --gray-4:#686868;
+  --gray-5:#3A3A3A;
+  --gray-6:#272727;
+  --gray-7:#1E1E1E;
+  --accent:#E8E6E0;
+  --gold:#C9A84C;
+  --teal:#4ABFB0;
+  --rose:#D97B78;
+  --nav-h:60px;
+}
+
+/* ── CUSTOM CURSOR ── */
+@media(pointer:fine){
+  body{cursor:none}
+  a,button{cursor:none}
+  .cursor{
+    position:fixed;width:8px;height:8px;
+    background:var(--gold);border-radius:50%;
+    pointer-events:none;z-index:9999;
+    transform:translate(-50%,-50%);
+    transition:width .2s ease,height .2s ease,background .2s ease;
+    mix-blend-mode:normal;
+  }
+  .cursor-ring{
+    position:fixed;width:32px;height:32px;
+    border:1px solid rgba(201,168,76,0.5);
+    border-radius:50%;
+    pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);
+    transition:width .3s ease,height .3s ease,border-color .3s ease,opacity .3s ease;
+    opacity:1;
+  }
+  .cursor.hovering{width:5px;height:5px;background:var(--teal)}
+  .cursor-ring.hovering{width:44px;height:44px;border-color:rgba(74,191,176,0.5)}
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--white);
+  color:var(--black);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  cursor:default;
+}
+a,button{cursor:pointer}
+
+/* ── CUSTOM CURSOR ── */
+@media(pointer:fine){
+  body{cursor:none}
+  .cursor{
+    position:fixed;width:10px;height:10px;
+    background:#0A0A0A;border-radius:50%;
+    pointer-events:none;z-index:9999;
+    transform:translate(-50%,-50%);
+    transition:transform .15s ease,width .2s ease,height .2s ease;
+  }
+  .cursor-ring{
+    position:fixed;width:36px;height:36px;
+    border:1px solid var(--black);border-radius:50%;
+    pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);
+    transition:transform .4s ease,width .3s ease,height .3s ease,opacity .3s ease;
+    opacity:.4;
+  }
+  a:hover ~ .cursor,.cursor.hover{width:6px;height:6px}
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--nav-h);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 clamp(1.5rem,5vw,4rem);
+  background:rgba(20,20,20,0.96);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--gray-6);
+}
+.nav-brand{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,2vw,1.2rem);
+  font-weight:600;letter-spacing:.02em;
+  color:var(--black);
+}
+.nav-links{display:flex;gap:clamp(.8rem,2.5vw,2rem);list-style:none}
+.nav-links a{
+  font-size:clamp(.65rem,1.3vw,.75rem);
+  color:var(--gray-3);text-decoration:none;
+  letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;transition:color .2s;
+}
+.nav-links a:hover{color:var(--gold)}
+.nav-btn{
+  display:none;background:none;border:none;
+  cursor:pointer;padding:4px;color:var(--black);
+}
+.mob-menu{
+  display:none;position:fixed;
+  top:var(--nav-h);left:0;right:0;
+  background:var(--white);
+  border-bottom:1px solid var(--gray-6);
+  z-index:99;padding:.5rem clamp(1.5rem,5vw,4rem);
+  flex-direction:column;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{
+  padding:.85rem 0;
+  font-size:.9rem;color:var(--black);
+  text-decoration:none;font-weight:500;
+  border-bottom:1px solid var(--gray-6);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.mob-menu a:last-child{border:none}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;
+  display:grid;
+  grid-template-columns:1fr;
+  align-items:flex-end;
+  padding:calc(var(--nav-h) + 2rem) clamp(1.5rem,5vw,4rem) clamp(3rem,6vw,5rem);
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--gray-6);
+}
+
+/* giant background number */
+.hero-bg-num{
+  position:absolute;
+  right:-2vw;top:50%;transform:translateY(-55%);
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(18rem,42vw,50rem);
+  font-weight:700;
+  line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1px var(--gray-6);
+  text-stroke:1px var(--gray-6);
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+}
+
+.hero-inner{position:relative;z-index:1;max-width:900px}
+
+.hero-overline{
+  display:flex;align-items:center;gap:12px;
+  font-size:clamp(.65rem,1.4vw,.75rem);
+  font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:clamp(1.2rem,3vw,2rem);
+}
+.hero-overline::before{
+  content:'';display:block;
+  width:clamp(28px,4vw,44px);height:1px;
+  background:var(--gold);flex-shrink:0;
+}
+
+.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.2rem,12vw,10rem);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:-.02em;
+  color:var(--black);
+  word-break:break-word;
+  overflow-wrap:break-word;
+}
+.hero-name em{
+  font-style:italic;
+  font-weight:300;
+  display:block;
+  padding-left:clamp(1rem,5vw,5rem);
+}
+
+.hero-meta{
+  margin-top:clamp(2rem,4vw,3.5rem);
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:clamp(2rem,4vw,4rem);
+  align-items:start;
+}
+@media(max-width:600px){.hero-meta{grid-template-columns:1fr}}
+
+.hero-stats{display:flex;gap:clamp(1.5rem,4vw,3rem);flex-wrap:wrap}
+.stat-block{display:flex;flex-direction:column;gap:2px}
+.stat-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:700;line-height:1;
+  color:var(--gold);
+}
+.stat-l{
+  font-size:clamp(.6rem,1.3vw,.68rem);
+  font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray-4);
+}
+
+.hero-contact{
+  display:flex;flex-direction:column;gap:.6rem;
+  border-left:1px solid var(--gray-6);
+  padding-left:clamp(1.5rem,4vw,3rem);
+}
+@media(max-width:600px){
+  .hero-contact{border-left:none;border-top:1px solid var(--gray-6);padding-left:0;padding-top:1.2rem;flex-direction:row;flex-wrap:wrap;gap:.5rem 1.2rem}
+}
+.c-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:clamp(.72rem,1.6vw,.82rem);color:var(--gray-3);
+  text-decoration:none;font-weight:400;transition:color .2s;
+  white-space:nowrap;
+}
+.c-link:hover{color:var(--gold)}
+.c-link svg{flex-shrink:0;opacity:.7}
+
+/* ── SECTION BASE ── */
+section{padding:clamp(3rem,8vw,7rem) clamp(1.5rem,5vw,4rem)}
+
+.s-label{
+  display:flex;align-items:center;gap:10px;
+  font-size:clamp(.62rem,1.3vw,.7rem);
+  font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:.6rem;
+}
+.s-label span{
+  display:inline-block;
+  width:clamp(20px,3vw,32px);height:1px;
+  background:var(--teal);
+}
+
+.s-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,5vw,3.5rem);
+  font-weight:600;line-height:1.1;
+  letter-spacing:-.01em;
+  color:var(--black);
+  margin-bottom:clamp(2.5rem,5vw,4.5rem);
+  overflow-wrap:break-word;
+}
+.s-title em{font-style:italic;font-weight:300}
+
+hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.5rem,5vw,4rem)}
+
+/* ── ABOUT ── */
+.about-layout{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:clamp(3rem,6vw,8rem);
+  align-items:start;
+}
+@media(max-width:760px){.about-layout{grid-template-columns:1fr}}
+
+.about-body{
+  font-size:clamp(.9rem,1.9vw,1.08rem);
+  line-height:1.9;color:var(--gray-2);
+  font-weight:300;
+}
+.about-body strong{font-weight:600;color:var(--black)}
+
+.pillars{display:flex;flex-direction:column;gap:.9rem}
+.pillar{
+  padding:clamp(1rem,2.5vw,1.3rem) clamp(1rem,2.5vw,1.4rem);
+  border:1px solid var(--gray-6);
+  border-radius:2px;
+  display:flex;align-items:flex-start;gap:.9rem;
+  transition:border-color .25s,background .25s;
+  background:transparent;
+}
+.pillar:hover{border-color:var(--teal);background:rgba(74,191,176,0.05)}
+.pillar:hover .p-title{color:var(--teal)}.pillar:hover .p-sub{color:var(--gray-2)}
+.p-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:300;
+  color:var(--teal);flex-shrink:0;
+  line-height:1.2;transition:color .25s;
+}
+.pillar:hover .p-num{color:var(--teal)}
+.p-title{font-size:clamp(.82rem,1.7vw,.9rem);font-weight:600;color:var(--black);margin-bottom:2px;transition:color .25s}
+.p-sub{font-size:clamp(.72rem,1.5vw,.78rem);color:var(--gray-4);line-height:1.5;transition:color .25s}
+
+/* ── EXPERIENCE ── */
+.exp-list{display:flex;flex-direction:column}
+.exp-item{
+  display:grid;
+  grid-template-columns:clamp(120px,18vw,200px) 1fr;
+  gap:clamp(1.5rem,4vw,4rem);
+  padding:clamp(1.8rem,4vw,3rem) 0;
+  border-bottom:1px solid var(--gray-6);
+  transition:padding-left .25s;
+}
+.exp-item:hover{padding-left:clamp(.5rem,1.5vw,1rem)}
+.exp-item:hover .exp-title{color:var(--gold)}
+@media(max-width:600px){.exp-item{grid-template-columns:1fr;gap:.8rem}}
+.exp-left{}
+.exp-period{
+  font-size:clamp(.68rem,1.4vw,.75rem);
+  font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gray-4);
+  line-height:1.5;
+}
+.exp-loc{
+  font-size:clamp(.68rem,1.4vw,.72rem);
+  color:var(--gray-5);margin-top:4px;
+}
+.exp-right{}
+.exp-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  font-weight:600;color:var(--black);
+  line-height:1.2;
+}
+.exp-company{
+  font-size:clamp(.75rem,1.6vw,.85rem);
+  font-weight:500;color:var(--gold);
+  margin-top:3px;margin-bottom:.9rem;
+  letter-spacing:.04em;
+}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.exp-bullets li{
+  font-size:clamp(.78rem,1.7vw,.86rem);
+  color:var(--gray-3);
+  padding-left:1.1rem;position:relative;
+  line-height:1.7;font-weight:300;
+}
+.exp-bullets li::before{
+  content:'—';position:absolute;left:0;
+  color:var(--gray-5);font-size:.7rem;
+  top:5px;
+}
+
+/* ── APPS ── */
+.apps-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));
+  gap:clamp(.8rem,2vw,1.2rem);
+}
+.app-card{
+  background:var(--white);
+  padding:clamp(1.4rem,3vw,2rem);
+  display:flex;flex-direction:column;
+  transition:background .25s;
+  position:relative;
+  overflow:hidden;
+}
+.app-card::after{
+  content:'';
+  position:absolute;bottom:0;left:0;
+  width:0;height:2px;
+  background:#0A0A0A;
+  transition:width .35s ease;
+}
+.app-card:hover{background:var(--gray-7);box-shadow:0 8px 32px rgba(201,168,76,0.12),0 0 0 1px rgba(201,168,76,0.3) inset}
+.app-card:hover::after{width:100%}
+
+.app-icon-row{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-bottom:1rem;
+}
+.app-emoji{font-size:1.6rem;line-height:1}
+.app-idx{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.5rem;font-weight:300;
+  color:var(--rose);line-height:1;opacity:.6;
+}
+.app-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,2.3vw,1.3rem);
+  font-weight:600;color:var(--black);
+  margin-bottom:.25rem;line-height:1.2;
+}
+.app-co{
+  font-size:clamp(.62rem,1.3vw,.68rem);
+  font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--teal);
+  margin-bottom:.65rem;
+}
+.app-desc{
+  font-size:clamp(.76rem,1.6vw,.83rem);
+  color:var(--gray-3);line-height:1.7;
+  font-weight:300;flex:1;margin-bottom:1.1rem;
+}
+.app-links{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:auto}
+.al{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:5px 11px;
+  border:1px solid var(--gray-5);
+  font-size:clamp(.64rem,1.3vw,.7rem);
+  color:var(--gray-3);text-decoration:none;
+  font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;
+  transition:background .2s,border-color .2s,color .2s;
+  border-radius:1px;
+  white-space:nowrap;
+}
+.al:hover{background:var(--gold);border-color:var(--gold);color:#111;transform:translateY(-1px)}
+.al svg{flex-shrink:0}
+
+/* ── SKILLS ── */
+.skills-layout{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));
+  gap:clamp(.8rem,2vw,1.2rem);
+  background:transparent;
+  border:none;
+}
+.sg{
+  background:var(--white);
+  padding:clamp(1.2rem,3vw,1.8rem);
+  transition:background .25s;
+}
+.sg:hover{background:var(--gray-7);box-shadow:0 0 0 1px rgba(201,168,76,0.4) inset}
+.sg-title{
+  font-size:clamp(.62rem,1.3vw,.68rem);
+  font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:.85rem;
+  padding-bottom:.6rem;
+  border-bottom:1px solid var(--gray-6);
+}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag{
+  padding:4px 10px;
+  border:1px solid var(--gray-6);
+  font-size:clamp(.68rem,1.4vw,.74rem);
+  color:var(--gray-3);font-weight:400;
+  border-radius:1px;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.tag:hover{background:var(--teal);border-color:var(--teal);color:#111}
+
+/* ── EDUCATION ── */
+.edu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));
+  gap:clamp(.8rem,2vw,1.2rem);
+}
+.edu-card{
+  background:var(--white);
+  padding:clamp(1.2rem,3vw,1.8rem);
+  position:relative;
+  transition:background .25s;
+}
+.edu-card:hover{background:var(--gray-6);box-shadow:0 8px 24px rgba(74,191,176,0.1),0 0 0 1px rgba(74,191,176,0.35) inset}
+.edu-card:hover .edu-deg{color:var(--black)}
+.edu-card:hover .edu-yr{color:var(--teal)}
+.edu-card:hover .edu-sc{color:var(--gold)}
+.edu-card:hover .edu-sch{color:var(--gray-2)}
+.edu-yr{
+  font-size:clamp(.62rem,1.3vw,.68rem);
+  font-weight:700;letter-spacing:.12em;
+  color:var(--teal);text-transform:uppercase;
+  margin-bottom:.5rem;transition:color .25s;
+}
+.edu-deg{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:700;color:var(--black);
+  line-height:1;margin-bottom:.3rem;transition:color .25s;
+}
+.edu-sch{
+  font-size:clamp(.72rem,1.5vw,.8rem);
+  color:var(--gray-3);line-height:1.4;
+  margin-bottom:.5rem;font-weight:300;transition:color .25s;
+}
+.edu-sc{
+  font-size:clamp(.7rem,1.4vw,.76rem);
+  font-weight:600;color:var(--gold);
+  letter-spacing:.05em;transition:color .25s;
+}
+
+/* ── LANGUAGES ── */
+.lang-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.5rem}
+.lang-p{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 18px;
+  border:1px solid var(--gray-6);
+  font-size:clamp(.78rem,1.6vw,.86rem);
+  font-weight:500;color:var(--black);
+  border-radius:1px;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.lang-p:hover{background:var(--rose);color:#111;border-color:var(--rose);transform:translateY(-2px)}
+
+/* ── FOOTER ── */
+footer{
+  padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem);
+  border-top:1px solid var(--gray-6);
+  background:#0A0A0A;
+  color:var(--white);
+  display:flex;flex-wrap:wrap;
+  justify-content:space-between;align-items:center;gap:1.5rem;
+}
+.f-left{}
+.f-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.2rem,3vw,1.8rem);
+  font-weight:600;letter-spacing:-.01em;
+}
+.f-role{font-size:clamp(.68rem,1.5vw,.76rem);color:var(--gray-5);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+.f-links{display:flex;flex-wrap:wrap;gap:.6rem}
+.f-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;
+  border:1px solid #2C2C2C;
+  font-size:clamp(.66rem,1.4vw,.72rem);
+  color:#888;text-decoration:none;
+  font-weight:500;letter-spacing:.06em;
+  border-radius:1px;transition:border-color .2s,color .2s;
+  white-space:nowrap;
+}
+.f-link:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .nav-btn{display:block}
+}
+@media(min-width:641px){
+  .nav-btn{display:none!important}
+  .mob-menu{display:none!important}
+}
 </style>
 </head>
 <body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav>
@@ -563,197 +549,163 @@
     <li><a href="#skills">Skills</a></li>
     <li><a href="#education">Education</a></li>
   </ul>
+  <button class="nav-btn" onclick="toggleMenu()" aria-label="Menu">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
 </nav>
+<div class="mob-menu" id="mMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#apps" onclick="closeMenu()">Apps</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#education" onclick="closeMenu()">Education</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
-
-  <div class="hero-badge">
-    <span class="dot"></span>
-    Available for opportunities
-  </div>
-
-  <h1 class="hero-name">
-    Mansi<br><em>Lakhatariya</em>
-  </h1>
-
-  <p class="hero-role">React Native Engineer &nbsp;·&nbsp; 7 Years Experience &nbsp;·&nbsp; iOS & Android</p>
-
-  <div class="hero-contact">
-    <a href="tel:7284022651" class="contact-item">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
-      +91 7284022651
-    </a>
-    <a href="mailto:lakhatariyamahi@gmail.com" class="contact-item">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
-      lakhatariyamahi@gmail.com
-    </a>
-    <a href="https://behance.net/mansilakhatariya" class="contact-item">
-      <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.884 2.102 1.884.7 0 1.15-.3 1.553-.963l2.1.113zm-7.726-7h5v.875H16v-.875zM9.5 12c0 2.206 1.794 4 4 4s4-1.794 4-4-1.794-4-4-4-4 1.794-4 4zm-2-5H4C2.896 7 2 7.896 2 9v9c0 1.104.896 2 2 2h7c1.104 0 2-.896 2-2V9c0-1.104-.896-2-2-2zm0 11H4V9h3.5v8z"/></svg>
-      @mansilakhatariya
-    </a>
-    <span class="contact-item">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      Ahmedabad, India
-    </span>
-  </div>
-
-  <div class="hero-stats">
-    <div class="stat">
-      <span class="stat-num">7+</span>
-      <span class="stat-label">Years Experience</span>
+  <div class="hero-bg-num" aria-hidden="true">7</div>
+  <div class="hero-inner">
+    <div class="hero-overline">React Native Engineer</div>
+    <h1 class="hero-name">
+      Mansi
+      <em>Lakhatariya</em>
+    </h1>
+    <div class="hero-meta">
+      <div class="hero-stats">
+        <div class="stat-block"><span class="stat-n">7+</span><span class="stat-l">Years</span></div>
+        <div class="stat-block"><span class="stat-n">9+</span><span class="stat-l">Apps</span></div>
+        <div class="stat-block"><span class="stat-n">5</span><span class="stat-l">Companies</span></div>
+        <div class="stat-block"><span class="stat-n">2</span><span class="stat-l">Platforms</span></div>
+      </div>
+      <div class="hero-contact">
+        <a href="tel:7284022651" class="c-link">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+          +91 7284022651
+        </a>
+        <a href="mailto:lakhatariyamahi@gmail.com" class="c-link">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          lakhatariyamahi@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/mansilakhatariya" target="_blank" class="c-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <rect x="1" y="1" width="22" height="22" rx="4" fill="#0A66C2"/>
+            <path d="M7.5 9.5H5.5V17H7.5V9.5ZM6.5 8.4C5.67 8.4 5 7.73 5 6.9C5 6.07 5.67 5.4 6.5 5.4C7.33 5.4 8 6.07 8 6.9C8 7.73 7.33 8.4 6.5 8.4ZM18.5 17H16.5V13.2C16.5 12.1 16.48 10.7 15 10.7C13.5 10.7 13.27 11.9 13.27 13.12V17H11.27V9.5H13.19V10.56H13.21C13.78 9.52 14.92 9 16.09 9C18.13 9 18.5 10.35 18.5 12.1V17Z" fill="white"/>
+          </svg>
+          linkedin.com/in/mansilakhatariya
+        </a>
+        <span class="c-link">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Ahmedabad, India
+        </span>
+      </div>
     </div>
-    <div class="stat">
-      <span class="stat-num">9+</span>
-      <span class="stat-label">Apps Shipped</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">5</span>
-      <span class="stat-label">Companies</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">2</span>
-      <span class="stat-label">Platforms</span>
-    </div>
-  </div>
-
-  <div class="scroll-hint">
-    <span class="scroll-line"></span>
-    Scroll to explore
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="section-rule">
 
 <!-- ABOUT -->
 <section id="about">
-  <p class="section-label">About Me</p>
-  <h2 class="section-title">Building mobile experiences<br>that scale.</h2>
-
-  <div class="about-grid">
-    <p class="about-text">
-      React Native Engineer with 7 years of experience delivering scalable, high-performance mobile applications across diverse domains including <strong style="color:var(--text)">real estate, fintech, and edtech</strong>. Skilled in leading end-to-end development, modernizing legacy codebases, and implementing robust architectures that support long-term growth.
+  <div class="s-label"><span></span>About</div>
+  <h2 class="s-title">Crafting <em>mobile experiences</em><br>at every scale.</h2>
+  <div class="about-layout">
+    <p class="about-body">
+      React Native Engineer with <strong>7 years of experience</strong> delivering scalable, high-performance mobile applications across <strong>real estate, fintech, and edtech</strong>. Skilled in leading end-to-end development, modernizing legacy codebases, and implementing robust architectures that support long-term growth.
       <br><br>
-      Adept at integrating complex features such as push notifications, deep linking, and offline-first capabilities while ensuring seamless deployment across iOS and Android platforms. Known for driving technical excellence, mentoring teams, and consistently delivering reliable, user-centric solutions in Agile environments.
+      Adept at integrating complex features such as push notifications, deep linking, and offline-first capabilities — ensuring seamless deployment across iOS and Android. Known for driving technical excellence, mentoring teams, and consistently delivering reliable, user-centric solutions in Agile environments.
     </p>
-
-    <div class="about-highlights">
-      <div class="highlight-card">
-        <div class="highlight-icon">🏗️</div>
-        <div class="highlight-text">
-          <h4>Architecture-first Mindset</h4>
-          <p>Clean Architecture, scalable navigation, centralized error handling</p>
-        </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="p-num">01</div>
+        <div><div class="p-title">Architecture-first Mindset</div><div class="p-sub">Clean Architecture, scalable navigation, centralized error handling</div></div>
       </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">🚀</div>
-        <div class="highlight-text">
-          <h4>End-to-end Ownership</h4>
-          <p>From coding to TestFlight & Play Store production deployments</p>
-        </div>
+      <div class="pillar">
+        <div class="p-num">02</div>
+        <div><div class="p-title">End-to-end Ownership</div><div class="p-sub">From coding to TestFlight & Play Store production deployments</div></div>
       </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">🤝</div>
-        <div class="highlight-text">
-          <h4>Team Mentor & Leader</h4>
-          <p>Guided junior developers and collaborated across cross-functional teams</p>
-        </div>
+      <div class="pillar">
+        <div class="p-num">03</div>
+        <div><div class="p-title">Team Mentor & Leader</div><div class="p-sub">Guided junior developers and cross-functional collaboration</div></div>
       </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">🤖</div>
-        <div class="highlight-text">
-          <h4>AI-Augmented Development</h4>
-          <p>Expert in leveraging AI tools to accelerate development velocity</p>
-        </div>
+      <div class="pillar">
+        <div class="p-num">04</div>
+        <div><div class="p-title">AI-Augmented Development</div><div class="p-sub">Expert in leveraging AI tools to accelerate development velocity</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="section-rule">
 
 <!-- EXPERIENCE -->
 <section id="experience">
-  <p class="section-label">Career</p>
-  <h2 class="section-title">Professional Experience</h2>
+  <div class="s-label"><span></span>Career</div>
+  <h2 class="s-title">Professional <em>Experience</em></h2>
+  <div class="exp-list">
 
-  <div class="timeline">
-
-    <div class="timeline-item">
-      <span class="timeline-dot"></span>
-      <div class="timeline-header">
-        <span class="job-title">React Native Engineer</span>
-        <span class="company">Avesta HQ</span>
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Feb 2024<br>Present</div>
+        <div class="exp-loc">📍 Ahmedabad</div>
       </div>
-      <div class="job-meta">
-        <span>📍 Ahmedabad</span>
-        <span>Feb 2024 – Present</span>
-      </div>
-      <div class="timeline-body">
-        <ul>
+      <div class="exp-right">
+        <div class="exp-title">React Native Engineer</div>
+        <div class="exp-company">Avesta HQ</div>
+        <ul class="exp-bullets">
           <li>Developed a core real estate application end-to-end within an Agile team of 4, from coding to production deployment.</li>
           <li>Led React Native version upgrades (v0.75 → v0.81) and integrated Expo EAS for automated builds and OTA updates.</li>
           <li>Architected a complete push notification system using Firebase (FCM) with deep linking for seamless user re-engagement.</li>
           <li>Refactored navigation to a scalable Auth/App/Bottom-Tab stack, improving app-wide state management.</li>
           <li>Resolved chronic Android build-time bottlenecks by implementing a caching mechanism.</li>
-          <li>Implemented centralized global error-handling and initiated a transition toward Clean Architecture.</li>
+          <li>Implemented centralized global error-handling and initiated transition toward Clean Architecture.</li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <span class="timeline-dot" style="background:var(--accent2); box-shadow: 0 0 12px var(--accent2);"></span>
-      <div class="timeline-header">
-        <span class="job-title">Senior Software Engineer</span>
-        <span class="company" style="color:var(--accent2)">Acquaint Softtech Pvt. Ltd.</span>
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Nov 2022<br>Dec 2023</div>
+        <div class="exp-loc">📍 Ahmedabad</div>
       </div>
-      <div class="job-meta">
-        <span>📍 Ahmedabad</span>
-        <span>Nov 2022 – Dec 2023</span>
-      </div>
-      <div class="timeline-body">
-        <ul>
-          <li>Spearheaded a transportation platform and a finance manager app featuring debt-reduction tools and automated insights.</li>
+      <div class="exp-right">
+        <div class="exp-title">Senior Software Engineer</div>
+        <div class="exp-company">Acquaint Softtech Pvt. Ltd.</div>
+        <ul class="exp-bullets">
+          <li>Spearheaded a transportation platform and finance manager app with debt-reduction tools and automated insights.</li>
           <li>Partnered with backend developers to define API requirements and implement complex data integrations.</li>
           <li>Delivered pixel-perfect interfaces from high-fidelity designs, iterating rapidly on direct client feedback.</li>
-          <li>Independently managed the full development lifecycle of an emerging application with evolving client requirements.</li>
+          <li>Independently managed the full development lifecycle of an emerging application with evolving requirements.</li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <span class="timeline-dot" style="background:var(--accent3); box-shadow: 0 0 12px var(--accent3);"></span>
-      <div class="timeline-header">
-        <span class="job-title">Software Engineer</span>
-        <span class="company" style="color:var(--accent3)">Smarsh Infotech</span>
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Oct 2021<br>Nov 2022</div>
+        <div class="exp-loc">🌐 Remote</div>
       </div>
-      <div class="job-meta">
-        <span>🌐 Remote</span>
-        <span>Oct 2021 – Nov 2022</span>
-      </div>
-      <div class="timeline-body">
-        <ul>
+      <div class="exp-right">
+        <div class="exp-title">Software Engineer</div>
+        <div class="exp-company">Smarsh Infotech</div>
+        <ul class="exp-bullets">
           <li>Contributed as a shadow developer in a 5+ member team to maintain and scale a large-scale EdTech application.</li>
           <li>Used a client-mandated proprietary IDE to implement features in a secure, compliance-driven environment.</li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <span class="timeline-dot"></span>
-      <div class="timeline-header">
-        <span class="job-title">Software Developer</span>
-        <span class="company">The Algorithm</span>
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Aug 2020<br>Sep 2021</div>
+        <div class="exp-loc">🌐 Remote</div>
       </div>
-      <div class="job-meta">
-        <span>🌐 Remote</span>
-        <span>Aug 2020 – Sep 2021</span>
-      </div>
-      <div class="timeline-body">
-        <ul>
-          <li>Developed and maintained four distinct mobile applications, including a rural media platform and a school-parent communication app.</li>
+      <div class="exp-right">
+        <div class="exp-title">Software Developer</div>
+        <div class="exp-company">The Algorithm</div>
+        <ul class="exp-bullets">
+          <li>Developed and maintained four distinct mobile applications including a rural media platform and school-parent communication app.</li>
           <li>Engineered an offline-first architecture using RealmDB for rural surveys in low-connectivity environments.</li>
           <li>Integrated high-fidelity video/audio playback, push notifications, and direct messaging for real-time coordination.</li>
           <li>Managed end-to-end deployment on Google Play Store and Apple App Store.</li>
@@ -761,21 +713,18 @@
       </div>
     </div>
 
-    <div class="timeline-item">
-      <span class="timeline-dot" style="background:var(--accent2); box-shadow: 0 0 12px var(--accent2);"></span>
-      <div class="timeline-header">
-        <span class="job-title">React Native Developer</span>
-        <span class="company" style="color:var(--accent2)">Virtual Heights IT Service Pvt. Ltd.</span>
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Apr 2019<br>Jun 2020</div>
+        <div class="exp-loc">📍 Ahmedabad</div>
       </div>
-      <div class="job-meta">
-        <span>📍 Ahmedabad</span>
-        <span>Apr 2019 – Jun 2020</span>
-      </div>
-      <div class="timeline-body">
-        <ul>
+      <div class="exp-right">
+        <div class="exp-title">React Native Developer</div>
+        <div class="exp-company">Virtual Heights IT Service Pvt. Ltd.</div>
+        <ul class="exp-bullets">
           <li>Contributed to a B2B/B2C Business Social Networking platform for product discovery and marketplace trading.</li>
           <li>Implemented Redux Toolkit for centralized state management alongside complex navigation and secure auth flows.</li>
-          <li>Developed a device-perfect UI ensuring consistent visual fidelity across varied screen sizes and hardware.</li>
+          <li>Developed device-perfect UI ensuring consistent visual fidelity across varied screen sizes and hardware.</li>
         </ul>
       </div>
     </div>
@@ -783,229 +732,283 @@
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="section-rule">
 
 <!-- APPS -->
 <section id="apps">
-  <p class="section-label">Portfolio</p>
-  <h2 class="section-title">Applications Shipped</h2>
-
+  <div class="s-label"><span></span>Portfolio</div>
+  <h2 class="s-title">Applications <em>Shipped</em></h2>
   <div class="apps-grid">
 
     <div class="app-card">
-      <div class="app-emoji">🏠</div>
+      <div class="app-icon-row"><div class="app-emoji">🏠</div><div class="app-idx">01</div></div>
       <div class="app-name">View.com.au</div>
-      <div class="app-company">Avesta HQ</div>
-      <div class="app-desc">Real estate platform going beyond traditional listings — aerial map search, property data, and insights for informed decisions across sale, rent, and off-market properties.</div>
+      <div class="app-co">Avesta HQ</div>
+      <div class="app-desc">Real estate platform with aerial map search, property data and insights for sale, rent and off-market opportunities — all in one place.</div>
+      <div class="app-links">
+        <a href="https://play.google.com/store/apps/details?id=au.com.realestateview&hl=en_IN" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.31.17.67.19 1 .07l11.67-6.74-2.52-2.52-10.15 9.19zm-1.93-20.5A1.5 1.5 0 0 0 1 4.5v15c0 .31.09.6.25.84l.09.1 8.4-8.4v-.2L1.34 3.17l-.09.09zm18.6 8.26-2.49-1.44-2.82 2.82 2.82 2.82 2.51-1.45a1.43 1.43 0 0 0 0-2.75zM4.18.24 15.85 6.97l-2.52 2.52L3.18.24a1.1 1.1 0 0 1 1 0z"/></svg>
+          Android
+        </a>
+        <a href="https://apps.apple.com/in/app/view-com-au/id474698182" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          iOS
+        </a>
+        <a href="https://view.com.au/" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Web
+        </a>
+      </div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">💳</div>
+      <div class="app-icon-row"><div class="app-emoji">💳</div><div class="app-idx">02</div></div>
       <div class="app-name">SuperFi</div>
-      <div class="app-company">Acquaint Softtech</div>
-      <div class="app-desc">Personal finance manager app that manages credit cards, provides money-saving tips, and helps users eliminate debt systematically.</div>
+      <div class="app-co">Acquaint Softtech</div>
+      <div class="app-desc">Personal finance manager handling credit cards, money-saving tips, and systematic debt elimination — your finance co-pilot.</div>
+      <div class="app-links">
+        <a href="https://www.joinsuperfi.com/app-demo" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.31.17.67.19 1 .07l11.67-6.74-2.52-2.52-10.15 9.19zm-1.93-20.5A1.5 1.5 0 0 0 1 4.5v15c0 .31.09.6.25.84l.09.1 8.4-8.4v-.2L1.34 3.17l-.09.09zm18.6 8.26-2.49-1.44-2.82 2.82 2.82 2.82 2.51-1.45a1.43 1.43 0 0 0 0-2.75zM4.18.24 15.85 6.97l-2.52 2.52L3.18.24a1.1 1.1 0 0 1 1 0z"/></svg>
+          Android
+        </a>
+        <a href="https://www.joinsuperfi.com/app-demo" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          iOS
+        </a>
+        <a href="https://www.joinsuperfi.com/app-demo" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Web
+        </a>
+      </div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">🛺</div>
+      <div class="app-icon-row"><div class="app-emoji">🛺</div><div class="app-idx">03</div></div>
       <div class="app-name">TryKo</div>
-      <div class="app-company">Acquaint Softtech</div>
-      <div class="app-desc">Trike transportation platform making rides safer, easier, faster and more accessible for communities.</div>
+      <div class="app-co">Acquaint Softtech</div>
+      <div class="app-desc">Trike transportation platform making rides safer, easier, faster and more accessible for communities across cities.</div>
+      <div class="app-links">
+        <a href="https://play.google.com/store/apps/details?id=com.tryko.pax" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.31.17.67.19 1 .07l11.67-6.74-2.52-2.52-10.15 9.19zm-1.93-20.5A1.5 1.5 0 0 0 1 4.5v15c0 .31.09.6.25.84l.09.1 8.4-8.4v-.2L1.34 3.17l-.09.09zm18.6 8.26-2.49-1.44-2.82 2.82 2.82 2.82 2.51-1.45a1.43 1.43 0 0 0 0-2.75zM4.18.24 15.85 6.97l-2.52 2.52L3.18.24a1.1 1.1 0 0 1 1 0z"/></svg>
+          Android
+        </a>
+      </div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">📚</div>
+      <div class="app-icon-row"><div class="app-emoji">📚</div><div class="app-idx">04</div></div>
       <div class="app-name">Dailyhunt</div>
-      <div class="app-company">Smarsh Infotech</div>
-      <div class="app-desc">India's all-in-one EdTech aggregator — a one-stop shop for all education needs across every category of learning.</div>
+      <div class="app-co">Smarsh Infotech</div>
+      <div class="app-desc">India's all-in-one EdTech aggregator — a one-stop shop for education across every learning category and platform.</div>
+      <div class="app-links"></div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">🌾</div>
+      <div class="app-icon-row"><div class="app-emoji">🌾</div><div class="app-idx">05</div></div>
       <div class="app-name">GaonConnection</div>
-      <div class="app-company">The Algorithm</div>
-      <div class="app-desc">India's biggest rural media platform — a two-way information highway bridging urban and rural India with knowledge and stories.</div>
+      <div class="app-co">The Algorithm</div>
+      <div class="app-desc">India's biggest rural media platform — a two-way information bridge connecting rural communities with urban India.</div>
+      <div class="app-links">
+        <a href="https://www.gaonconnection.com/" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Web
+        </a>
+      </div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">🎧</div>
+      <div class="app-icon-row"><div class="app-emoji">🎧</div><div class="app-idx">06</div></div>
       <div class="app-name">The Slow</div>
-      <div class="app-company">The Algorithm</div>
-      <div class="app-desc">A premium content delivery application supporting rich Audio, Video, and Text experiences for mindful consumption.</div>
+      <div class="app-co">The Algorithm</div>
+      <div class="app-desc">Premium content delivery application for Audio, Video and Text — designed for intentional, mindful consumption.</div>
+      <div class="app-links">
+        <a href="https://play.google.com/store/apps/details?id=com.app.slowapp" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.31.17.67.19 1 .07l11.67-6.74-2.52-2.52-10.15 9.19zm-1.93-20.5A1.5 1.5 0 0 0 1 4.5v15c0 .31.09.6.25.84l.09.1 8.4-8.4v-.2L1.34 3.17l-.09.09zm18.6 8.26-2.49-1.44-2.82 2.82 2.82 2.82 2.51-1.45a1.43 1.43 0 0 0 0-2.75zM4.18.24 15.85 6.97l-2.52 2.52L3.18.24a1.1 1.1 0 0 1 1 0z"/></svg>
+          Android
+        </a>
+        <a href="https://apps.apple.com/in/app/the-slow-app/id6760806423" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          iOS
+        </a>
+        <a href="https://turnslow.com/" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Web
+        </a>
+      </div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">🏫</div>
+      <div class="app-icon-row"><div class="app-emoji">🏫</div><div class="app-idx">07</div></div>
       <div class="app-name">SchoolsOut</div>
-      <div class="app-company">The Algorithm</div>
-      <div class="app-desc">Community app that empowers parents to manage kid's pick-up schedules and communicate directly with schools in real-time.</div>
+      <div class="app-co">The Algorithm</div>
+      <div class="app-desc">Community app for parents to manage kid's pick-up schedules and communicate directly with schools in real-time.</div>
+      <div class="app-links">
+        <a href="https://play.google.com/store/apps/details?id=in.thealgo.schoolsout" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.31.17.67.19 1 .07l11.67-6.74-2.52-2.52-10.15 9.19zm-1.93-20.5A1.5 1.5 0 0 0 1 4.5v15c0 .31.09.6.25.84l.09.1 8.4-8.4v-.2L1.34 3.17l-.09.09zm18.6 8.26-2.49-1.44-2.82 2.82 2.82 2.82 2.51-1.45a1.43 1.43 0 0 0 0-2.75zM4.18.24 15.85 6.97l-2.52 2.52L3.18.24a1.1 1.1 0 0 1 1 0z"/></svg>
+          Android
+        </a>
+        <a href="https://apps.apple.com/us/app/schoolsout-after-school-pickup/id1527130168" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          iOS
+        </a>
+        <a href="https://www.schoolsout.online/" target="_blank" class="al">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Web
+        </a>
+      </div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">🧠</div>
+      <div class="app-icon-row"><div class="app-emoji">🧠</div><div class="app-idx">08</div></div>
       <div class="app-name">BX Builders</div>
-      <div class="app-company">The Algorithm</div>
-      <div class="app-desc">Innovative app helping neurodivergent individuals practice and learn social behaviours through guided, supportive experiences.</div>
+      <div class="app-co">The Algorithm</div>
+      <div class="app-desc">Innovative app helping neurodivergent individuals practice and learn social behaviours through guided, structured experiences.</div>
+      <div class="app-links"></div>
     </div>
 
     <div class="app-card">
-      <div class="app-emoji">🤝</div>
+      <div class="app-icon-row"><div class="app-emoji">🤝</div><div class="app-idx">09</div></div>
       <div class="app-name">LETSBIZ</div>
-      <div class="app-company">Virtual Heights IT</div>
-      <div class="app-desc">B2B/B2C Business Social Networking platform for product and service discovery, enabling buying, selling, and trading between businesses.</div>
+      <div class="app-co">Virtual Heights IT</div>
+      <div class="app-desc">B2B/B2C Business Social Networking platform for product and service discovery — buying, selling and trading for businesses.</div>
+      <div class="app-links"></div>
     </div>
 
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="section-rule">
 
 <!-- SKILLS -->
 <section id="skills">
-  <p class="section-label">Expertise</p>
-  <h2 class="section-title">Technical Skills</h2>
-
-  <div class="skills-wrapper">
-
-    <div class="skill-group">
-      <div class="skill-group-title">📱 Mobile & Languages</div>
+  <div class="s-label"><span></span>Expertise</div>
+  <h2 class="s-title">Technical <em>Skills</em></h2>
+  <div class="skills-layout">
+    <div class="sg">
+      <div class="sg-title">📱 Mobile & Languages</div>
       <div class="tags">
-        <span class="tag">React Native</span>
-        <span class="tag">ReactJS</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">TypeScript</span>
-        <span class="tag">Expo EAS</span>
-        <span class="tag">Flutter</span>
-        <span class="tag">Objective-C / Swift</span>
-        <span class="tag">RESTful APIs</span>
+        <span class="tag">React Native</span><span class="tag">ReactJS</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Expo EAS</span><span class="tag">Flutter</span><span class="tag">Objective-C</span><span class="tag">Swift</span><span class="tag">RESTful APIs</span>
       </div>
     </div>
-
-    <div class="skill-group">
-      <div class="skill-group-title">🗄️ State & Data</div>
+    <div class="sg">
+      <div class="sg-title">🗄️ State & Data</div>
       <div class="tags">
-        <span class="tag">Redux Toolkit</span>
-        <span class="tag">TanStack Query</span>
-        <span class="tag">RealmDB</span>
-        <span class="tag">AsyncStorage</span>
-        <span class="tag">Stateless / Stateful</span>
-        <span class="tag">Offline-first</span>
+        <span class="tag">Redux Toolkit</span><span class="tag">TanStack Query</span><span class="tag">RealmDB</span><span class="tag">AsyncStorage</span><span class="tag">Offline-first</span><span class="tag">Axios</span>
       </div>
     </div>
-
-    <div class="skill-group">
-      <div class="skill-group-title">🔧 Services & DevOps</div>
+    <div class="sg">
+      <div class="sg-title">🔧 Services & DevOps</div>
       <div class="tags">
-        <span class="tag">Firebase FCM</span>
-        <span class="tag">Crashlytics</span>
-        <span class="tag">OTA Updates</span>
-        <span class="tag">CI/CD</span>
-        <span class="tag">GitHub / BitBucket</span>
-        <span class="tag">Code Signing</span>
-        <span class="tag">Sentry</span>
-        <span class="tag">Axios</span>
+        <span class="tag">Firebase FCM</span><span class="tag">Crashlytics</span><span class="tag">OTA Updates</span><span class="tag">CI/CD</span><span class="tag">GitHub</span><span class="tag">BitBucket</span><span class="tag">Code Signing</span><span class="tag">Sentry</span>
       </div>
     </div>
-
-    <div class="skill-group">
-      <div class="skill-group-title">✨ Core Features</div>
+    <div class="sg">
+      <div class="sg-title">✨ Core Features</div>
       <div class="tags">
-        <span class="tag">Push Notifications</span>
-        <span class="tag">Deep Linking</span>
-        <span class="tag">Geolocation</span>
-        <span class="tag">React Navigation</span>
-        <span class="tag">Pixel-perfect UI</span>
-        <span class="tag">A/B Experimentation</span>
-        <span class="tag">Error Handling</span>
+        <span class="tag">Push Notifications</span><span class="tag">Deep Linking</span><span class="tag">Geolocation</span><span class="tag">React Navigation</span><span class="tag">Pixel-perfect UI</span><span class="tag">A/B Testing</span>
       </div>
     </div>
-
-    <div class="skill-group">
-      <div class="skill-group-title">🎨 Design & Tools</div>
+    <div class="sg">
+      <div class="sg-title">🎨 Design & Tools</div>
       <div class="tags">
-        <span class="tag">Figma</span>
-        <span class="tag">Native Base</span>
-        <span class="tag">Reactotron</span>
-        <span class="tag">Clarity</span>
-        <span class="tag">Build Flavors</span>
-        <span class="tag">Automated Testing</span>
+        <span class="tag">Figma</span><span class="tag">Native Base</span><span class="tag">Reactotron</span><span class="tag">Clarity</span><span class="tag">Build Flavors</span><span class="tag">Automated Testing</span>
       </div>
     </div>
-
-    <div class="skill-group">
-      <div class="skill-group-title">🤝 Soft Skills</div>
+    <div class="sg">
+      <div class="sg-title">🤝 Soft Skills</div>
       <div class="tags">
-        <span class="tag">Leadership</span>
-        <span class="tag">Team Collaboration</span>
-        <span class="tag">Mentoring</span>
-        <span class="tag">Agile</span>
-        <span class="tag">Advanced Debugging</span>
-        <span class="tag">AI-augmented Dev</span>
-        <span class="tag">Cross-functional</span>
+        <span class="tag">Leadership</span><span class="tag">Mentoring</span><span class="tag">Agile</span><span class="tag">Debugging</span><span class="tag">AI-augmented Dev</span><span class="tag">Cross-functional</span>
       </div>
     </div>
-
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="section-rule">
 
 <!-- EDUCATION -->
 <section id="education">
-  <p class="section-label">Academics</p>
-  <h2 class="section-title">Education</h2>
-
+  <div class="s-label"><span></span>Academics</div>
+  <h2 class="s-title"><em>Education</em></h2>
   <div class="edu-grid">
-
-    <div class="edu-card">
-      <span class="edu-year">2019</span>
-      <div class="edu-degree">MCA</div>
-      <div class="edu-school">Dr. Subhash University</div>
-      <div class="edu-score">81.40%</div>
-    </div>
-
-    <div class="edu-card">
-      <span class="edu-year">2017</span>
-      <div class="edu-degree">BCA</div>
-      <div class="edu-school">M.M.G College</div>
-      <div class="edu-score">72.37%</div>
-    </div>
-
-    <div class="edu-card">
-      <span class="edu-year">2014</span>
-      <div class="edu-degree">HSC</div>
-      <div class="edu-school">Shree Kanya Vidhya Mandir</div>
-      <div class="edu-score">77.73%</div>
-    </div>
-
-    <div class="edu-card">
-      <span class="edu-year">2012</span>
-      <div class="edu-degree">SSC</div>
-      <div class="edu-school">Shree Kanya Vidhya Mandir</div>
-      <div class="edu-score">77.00%</div>
-    </div>
-
+    <div class="edu-card"><div class="edu-yr">2019</div><div class="edu-deg">MCA</div><div class="edu-sch">Dr. Subhash University</div><div class="edu-sc">81.40%</div></div>
+    <div class="edu-card"><div class="edu-yr">2017</div><div class="edu-deg">BCA</div><div class="edu-sch">M.M.G College</div><div class="edu-sc">72.37%</div></div>
+    <div class="edu-card"><div class="edu-yr">2014</div><div class="edu-deg">HSC</div><div class="edu-sch">Shree Kanya Vidhya Mandir</div><div class="edu-sc">77.73%</div></div>
+    <div class="edu-card"><div class="edu-yr">2012</div><div class="edu-deg">SSC</div><div class="edu-sch">Shree Kanya Vidhya Mandir</div><div class="edu-sc">77.00%</div></div>
   </div>
-
-  <!-- LANGUAGES -->
-  <div style="margin-top: 3rem;">
-    <p class="section-label" style="margin-bottom:1rem;">Languages</p>
-    <div class="lang-list">
-      <div class="lang-pill"><span class="lang-flag">🇮🇳</span> Gujarati</div>
-      <div class="lang-pill"><span class="lang-flag">🇬🇧</span> English</div>
-      <div class="lang-pill"><span class="lang-flag">🇮🇳</span> Hindi</div>
+  <div style="margin-top:2rem">
+    <div class="s-label" style="margin-bottom:.8rem"><span></span>Languages</div>
+    <div class="lang-row">
+      <div class="lang-p">🇮🇳 Gujarati</div>
+      <div class="lang-p">🇬🇧 English</div>
+      <div class="lang-p">🇮🇳 Hindi</div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div>
-    <div class="footer-name">Mansi Lakhatariya</div>
-    <div class="footer-copy" style="margin-top:4px;">React Native Engineer · Ahmedabad, India</div>
+  <div class="f-left">
+    <div class="f-name">Mansi Lakhatariya</div>
+    <div class="f-role">React Native Engineer · Ahmedabad, India</div>
   </div>
-  <div class="footer-copy">lakhatariyamahi@gmail.com &nbsp;·&nbsp; +91 7284022651</div>
+  <div class="f-links">
+    <a href="mailto:lakhatariyamahi@gmail.com" class="f-link">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      Email
+    </a>
+    <a href="tel:7284022651" class="f-link">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+      Call
+    </a>
+    <a href="https://www.linkedin.com/in/mansilakhatariya" target="_blank" class="f-link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+        <rect x="1" y="1" width="22" height="22" rx="4" fill="#0A66C2"/>
+        <path d="M7.5 9.5H5.5V17H7.5V9.5ZM6.5 8.4C5.67 8.4 5 7.73 5 6.9C5 6.07 5.67 5.4 6.5 5.4C7.33 5.4 8 6.07 8 6.9C8 7.73 7.33 8.4 6.5 8.4ZM18.5 17H16.5V13.2C16.5 12.1 16.48 10.7 15 10.7C13.5 10.7 13.27 11.9 13.27 13.12V17H11.27V9.5H13.19V10.56H13.21C13.78 9.52 14.92 9 16.09 9C18.13 9 18.5 10.35 18.5 12.1V17Z" fill="white"/>
+      </svg>
+      LinkedIn
+    </a>
+  </div>
 </footer>
 
+<script>
+// Custom cursor
+(function(){
+  var c=document.getElementById('cursor');
+  var r=document.getElementById('cursorRing');
+  if(!c||!r)return;
+  var mx=window.innerWidth/2, my=window.innerHeight/2;
+  var rx=mx, ry=my;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX; my=e.clientY;
+    c.style.left=mx+'px'; c.style.top=my+'px';
+  });
+  function animRing(){
+    rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1;
+    r.style.left=Math.round(rx*10)/10+'px';
+    r.style.top=Math.round(ry*10)/10+'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a,button').forEach(function(el){
+    el.addEventListener('mouseenter',function(){
+      c.classList.add('hovering');
+      r.classList.add('hovering');
+    });
+    el.addEventListener('mouseleave',function(){
+      c.classList.remove('hovering');
+      r.classList.remove('hovering');
+    });
+  });
+})();
+
+// Mobile menu
+function toggleMenu(){document.getElementById('mMenu').classList.toggle('open')}
+function closeMenu(){document.getElementById('mMenu').classList.remove('open')}
+document.addEventListener('click',function(e){
+  var m=document.getElementById('mMenu');
+  var b=document.querySelector('.nav-btn');
+  if(m&&m.classList.contains('open')&&!m.contains(e.target)&&b&&!b.contains(e.target))m.classList.remove('open');
+});
+</script>
 </body>
 </html>
