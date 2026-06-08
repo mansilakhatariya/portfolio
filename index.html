@@ -25,30 +25,7 @@
   --nav-h:60px;
 }
 
-/* ── CUSTOM CURSOR ── */
-@media(pointer:fine){
-  body{cursor:none}
-  a,button{cursor:none}
-  .cursor{
-    position:fixed;width:8px;height:8px;
-    background:var(--gold);border-radius:50%;
-    pointer-events:none;z-index:9999;
-    transform:translate(-50%,-50%);
-    transition:width .2s ease,height .2s ease,background .2s ease;
-    mix-blend-mode:normal;
-  }
-  .cursor-ring{
-    position:fixed;width:32px;height:32px;
-    border:1px solid rgba(201,168,76,0.5);
-    border-radius:50%;
-    pointer-events:none;z-index:9998;
-    transform:translate(-50%,-50%);
-    transition:width .3s ease,height .3s ease,border-color .3s ease,opacity .3s ease;
-    opacity:1;
-  }
-  .cursor.hovering{width:5px;height:5px;background:var(--teal)}
-  .cursor-ring.hovering{width:44px;height:44px;border-color:rgba(74,191,176,0.5)}
-}
+
 
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
@@ -59,28 +36,8 @@ body{
   -webkit-font-smoothing:antialiased;
   cursor:default;
 }
-a,button{cursor:pointer}
 
-/* ── CUSTOM CURSOR ── */
-@media(pointer:fine){
-  body{cursor:none}
-  .cursor{
-    position:fixed;width:10px;height:10px;
-    background:#0A0A0A;border-radius:50%;
-    pointer-events:none;z-index:9999;
-    transform:translate(-50%,-50%);
-    transition:transform .15s ease,width .2s ease,height .2s ease;
-  }
-  .cursor-ring{
-    position:fixed;width:36px;height:36px;
-    border:1px solid var(--black);border-radius:50%;
-    pointer-events:none;z-index:9998;
-    transform:translate(-50%,-50%);
-    transition:transform .4s ease,width .3s ease,height .3s ease,opacity .3s ease;
-    opacity:.4;
-  }
-  a:hover ~ .cursor,.cursor.hover{width:6px;height:6px}
-}
+
 
 /* ── NAV ── */
 nav{
@@ -204,7 +161,7 @@ nav{
   color:var(--gold);
 }
 .stat-l{
-  font-size:clamp(.6rem,1.3vw,.68rem);
+  font-size:clamp(.7rem,1.4vw,.76rem);
   font-weight:600;letter-spacing:.12em;text-transform:uppercase;
   color:var(--gray-4);
 }
@@ -219,7 +176,7 @@ nav{
 }
 .c-link{
   display:inline-flex;align-items:center;gap:8px;
-  font-size:clamp(.72rem,1.6vw,.82rem);color:var(--gray-3);
+  font-size:clamp(.88rem,2vw,.98rem);color:var(--gray-3);
   text-decoration:none;font-weight:400;transition:color .2s;
   white-space:nowrap;
 }
@@ -227,12 +184,12 @@ nav{
 .c-link svg{flex-shrink:0;opacity:.7}
 
 /* ── SECTION BASE ── */
-section{padding:clamp(3rem,8vw,7rem) clamp(1.5rem,5vw,4rem)}
+section{padding:clamp(1.5rem,3vw,2.5rem) clamp(1.5rem,5vw,4rem)}
 
 .s-label{
   display:flex;align-items:center;gap:10px;
-  font-size:clamp(.62rem,1.3vw,.7rem);
-  font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  font-size:clamp(.78rem,1.5vw,.84rem);
+  font-weight:600;letter-spacing:.16em;text-transform:uppercase;
   color:var(--teal);margin-bottom:.6rem;
 }
 .s-label span{
@@ -243,11 +200,11 @@ section{padding:clamp(3rem,8vw,7rem) clamp(1.5rem,5vw,4rem)}
 
 .s-title{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.8rem,5vw,3.5rem);
+  font-size:clamp(2rem,5vw,3.2rem);
   font-weight:600;line-height:1.1;
   letter-spacing:-.01em;
   color:var(--black);
-  margin-bottom:clamp(2.5rem,5vw,4.5rem);
+  margin-bottom:clamp(1.2rem,2.5vw,2rem);
   overflow-wrap:break-word;
 }
 .s-title em{font-style:italic;font-weight:300}
@@ -264,7 +221,7 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
 @media(max-width:760px){.about-layout{grid-template-columns:1fr}}
 
 .about-body{
-  font-size:clamp(.9rem,1.9vw,1.08rem);
+  font-size:clamp(1.05rem,2.2vw,1.18rem);
   line-height:1.9;color:var(--gray-2);
   font-weight:300;
 }
@@ -288,8 +245,8 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
   line-height:1.2;transition:color .25s;
 }
 .pillar:hover .p-num{color:var(--teal)}
-.p-title{font-size:clamp(.82rem,1.7vw,.9rem);font-weight:600;color:var(--black);margin-bottom:2px;transition:color .25s}
-.p-sub{font-size:clamp(.72rem,1.5vw,.78rem);color:var(--gray-4);line-height:1.5;transition:color .25s}
+.p-title{font-size:clamp(.96rem,2vw,1.06rem);font-weight:600;color:var(--black);margin-bottom:2px;transition:color .25s}
+.p-sub{font-size:clamp(.88rem,1.8vw,.95rem);color:var(--gray-4);line-height:1.55;transition:color .25s}
 
 /* ── EXPERIENCE ── */
 .exp-list{display:flex;flex-direction:column}
@@ -297,7 +254,7 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
   display:grid;
   grid-template-columns:clamp(120px,18vw,200px) 1fr;
   gap:clamp(1.5rem,4vw,4rem);
-  padding:clamp(1.8rem,4vw,3rem) 0;
+  padding:clamp(1.2rem,2.5vw,2rem) 0;
   border-bottom:1px solid var(--gray-6);
   transition:padding-left .25s;
 }
@@ -306,8 +263,8 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
 @media(max-width:600px){.exp-item{grid-template-columns:1fr;gap:.8rem}}
 .exp-left{}
 .exp-period{
-  font-size:clamp(.68rem,1.4vw,.75rem);
-  font-weight:600;letter-spacing:.1em;
+  font-size:clamp(.82rem,1.6vw,.88rem);
+  font-weight:600;letter-spacing:.08em;
   text-transform:uppercase;color:var(--gray-4);
   line-height:1.5;
 }
@@ -318,12 +275,12 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
 .exp-right{}
 .exp-title{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  font-size:clamp(1.3rem,3vw,1.7rem);
   font-weight:600;color:var(--black);
   line-height:1.2;
 }
 .exp-company{
-  font-size:clamp(.75rem,1.6vw,.85rem);
+  font-size:clamp(.92rem,2vw,1.02rem);
   font-weight:500;color:var(--gold);
   margin-top:3px;margin-bottom:.9rem;
   letter-spacing:.04em;
@@ -378,19 +335,19 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
 }
 .app-name{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.1rem,2.3vw,1.3rem);
+  font-size:clamp(1.3rem,2.8vw,1.5rem);
   font-weight:600;color:var(--black);
   margin-bottom:.25rem;line-height:1.2;
 }
 .app-co{
-  font-size:clamp(.62rem,1.3vw,.68rem);
-  font-weight:600;letter-spacing:.14em;
+  font-size:clamp(.78rem,1.5vw,.84rem);
+  font-weight:600;letter-spacing:.12em;
   text-transform:uppercase;color:var(--teal);
   margin-bottom:.65rem;
 }
 .app-desc{
-  font-size:clamp(.76rem,1.6vw,.83rem);
-  color:var(--gray-3);line-height:1.7;
+  font-size:clamp(.95rem,2vw,1.02rem);
+  color:var(--gray-3);line-height:1.72;
   font-weight:300;flex:1;margin-bottom:1.1rem;
 }
 .app-links{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:auto}
@@ -424,8 +381,8 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
 }
 .sg:hover{background:var(--gray-7);box-shadow:0 0 0 1px rgba(201,168,76,0.4) inset}
 .sg-title{
-  font-size:clamp(.62rem,1.3vw,.68rem);
-  font-weight:700;letter-spacing:.16em;
+  font-size:clamp(.78rem,1.5vw,.84rem);
+  font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;color:var(--gold);
   margin-bottom:.85rem;
   padding-bottom:.6rem;
@@ -460,24 +417,24 @@ hr.section-rule{border:none;border-top:1px solid var(--gray-6);margin:0 clamp(1.
 .edu-card:hover .edu-sc{color:var(--gold)}
 .edu-card:hover .edu-sch{color:var(--gray-2)}
 .edu-yr{
-  font-size:clamp(.62rem,1.3vw,.68rem);
-  font-weight:700;letter-spacing:.12em;
+  font-size:clamp(.78rem,1.5vw,.84rem);
+  font-weight:700;letter-spacing:.1em;
   color:var(--teal);text-transform:uppercase;
   margin-bottom:.5rem;transition:color .25s;
 }
 .edu-deg{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-size:clamp(1.7rem,4.5vw,2.5rem);
   font-weight:700;color:var(--black);
   line-height:1;margin-bottom:.3rem;transition:color .25s;
 }
 .edu-sch{
-  font-size:clamp(.72rem,1.5vw,.8rem);
+  font-size:clamp(.9rem,1.8vw,.98rem);
   color:var(--gray-3);line-height:1.4;
   margin-bottom:.5rem;font-weight:300;transition:color .25s;
 }
 .edu-sc{
-  font-size:clamp(.7rem,1.4vw,.76rem);
+  font-size:clamp(.88rem,1.7vw,.94rem);
   font-weight:600;color:var(--gold);
   letter-spacing:.05em;transition:color .25s;
 }
@@ -510,7 +467,7 @@ footer{
   font-size:clamp(1.2rem,3vw,1.8rem);
   font-weight:600;letter-spacing:-.01em;
 }
-.f-role{font-size:clamp(.68rem,1.5vw,.76rem);color:var(--gray-5);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+.f-role{font-size:clamp(.78rem,1.6vw,.86rem);color:var(--gray-5);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
 .f-links{display:flex;flex-wrap:wrap;gap:.6rem}
 .f-link{
   display:inline-flex;align-items:center;gap:6px;
@@ -536,8 +493,6 @@ footer{
 </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav>
@@ -576,7 +531,6 @@ footer{
       <div class="hero-stats">
         <div class="stat-block"><span class="stat-n">7+</span><span class="stat-l">Years</span></div>
         <div class="stat-block"><span class="stat-n">9+</span><span class="stat-l">Apps</span></div>
-        <div class="stat-block"><span class="stat-n">5</span><span class="stat-l">Companies</span></div>
         <div class="stat-block"><span class="stat-n">2</span><span class="stat-l">Platforms</span></div>
       </div>
       <div class="hero-contact">
@@ -971,36 +925,6 @@ footer{
 </footer>
 
 <script>
-// Custom cursor
-(function(){
-  var c=document.getElementById('cursor');
-  var r=document.getElementById('cursorRing');
-  if(!c||!r)return;
-  var mx=window.innerWidth/2, my=window.innerHeight/2;
-  var rx=mx, ry=my;
-  document.addEventListener('mousemove',function(e){
-    mx=e.clientX; my=e.clientY;
-    c.style.left=mx+'px'; c.style.top=my+'px';
-  });
-  function animRing(){
-    rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1;
-    r.style.left=Math.round(rx*10)/10+'px';
-    r.style.top=Math.round(ry*10)/10+'px';
-    requestAnimationFrame(animRing);
-  }
-  animRing();
-  document.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){
-      c.classList.add('hovering');
-      r.classList.add('hovering');
-    });
-    el.addEventListener('mouseleave',function(){
-      c.classList.remove('hovering');
-      r.classList.remove('hovering');
-    });
-  });
-})();
-
 // Mobile menu
 function toggleMenu(){document.getElementById('mMenu').classList.toggle('open')}
 function closeMenu(){document.getElementById('mMenu').classList.remove('open')}
